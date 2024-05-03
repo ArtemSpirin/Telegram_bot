@@ -24,7 +24,7 @@ for i in range(len(list2)):
     D2.update({list2[i]:i})
 
 for i in D2:
-    markup02.add(types.InlineKeyboardButton(i, callback_data=str(D2.get(i))))
+    markup02.add(types.InlineKeyboardButton(i, callback_data=str(D2.get(i)).rjust(2, '0')))
 
 D3 = {}
 list3 = ['🍪 Дифференциальные уравнения', '📈 Математический анализ', '🎲 Теор. вероятности и мат. статистика', '📐 Линейная алгебра', '🔓 Функции комплексного переменного', '🔢 Теория групп', '➿ Топология']
@@ -32,7 +32,7 @@ for i in range(len(list3)):
     D3.update({list3[i]:i})
 
 for i in D3:
-    markup03.add(types.InlineKeyboardButton(i, callback_data=str(D3.get(i))))
+    markup03.add(types.InlineKeyboardButton(i, callback_data=str(D3.get(i)).rjust(3, '0')))
 
 D4 = {}
 list4 = ['🇨🇳 Китайский', '🇩🇪 Немецкий', '🇪🇸 Испанский', '🇬🇧 Английский']
@@ -40,7 +40,7 @@ for i in range(len(list4)):
     D4.update({list4[i]:i})
 
 for i in D4:
-    markup04.add(types.InlineKeyboardButton(i, callback_data=str(D4.get(i))))
+    markup04.add(types.InlineKeyboardButton(i, callback_data=str(D4.get(i)).rjust(4, '0')))
 
 D5 = {}
 list5 = ['🪆 Русская культура', '📻 Российская наука и техника', '📊 Социальная история России', '💸 Россия и мир в ХХ веке', '⚔️ Россия в международных отношениях', '📝 Реформы и реформаторы в России']
@@ -48,7 +48,7 @@ for i in range(len(list5)):
     D5.update({list5[i]:i})
 
 for i in D5:
-    markup05.add(types.InlineKeyboardButton(i, callback_data=str(D5.get(i))))
+    markup05.add(types.InlineKeyboardButton(i, callback_data=str(D5.get(i)).rjust(5, '0')))
 
 D6 = {}
 list6 = ['📃 Лекции по программированию', '🔁 Алгоритмы', '🖥 Физическое моделирование', '💾 Хранение и обработка данных', '🤖 Машинное обучение']
@@ -56,7 +56,7 @@ for i in range(len(list6)):
     D6.update({list6[i]:i})
 
 for i in D6:
-    markup06.add(types.InlineKeyboardButton(i, callback_data=str(D6.get(i))))
+    markup06.add(types.InlineKeyboardButton(i, callback_data=str(D6.get(i)).rjust(6, '0')))
 
 
 for n in list_markups:
