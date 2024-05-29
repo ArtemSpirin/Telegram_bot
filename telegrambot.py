@@ -33,22 +33,29 @@ def creat_markup(list):
     return [markup,values]
 
 
-def create_final_markups(callback, section, lections='', solver=None, textbook=None):
+def create_final_markups(callback, lections='', solver=None, textbook=None):
     global numbers
     values = []
     markup = types.InlineKeyboardMarkup()
     if lections != '':
         markup.add(types.InlineKeyboardButton('Ютуб леккции', url=lections))
     if solver != None:
-        markup.add(types.InlineKeyboardButton('Ютуб леккции', callback_data=send_file()))
-
+        markup.add(types.InlineKeyboardButton('Учебники', callback_data=send_file(callback,solver)))
+    if textbook != None:
+        markup.add(types.InlineKeyboardButton('Решебники', callback_data=send_file(callback, textbook)))
+    markup.add(types.InlineKeyboardButton('Назад', callback_data=numbers[0]))
+    values.append(numbers[0])
+    numbers = numbers[1:]
+    return [markup, values]
 
 
 for section in subjects:
     list = creat_markup(subjects[section])
     all_markups[section] = list[0]
     values[section] = list[1]
-
+    for section in subjects:
+        for elm in subjects[section]:
+            create_final_markups()
 
 @bot.message_handler(commands=['start'])
 def main(message):
@@ -83,7 +90,3 @@ def choose(callback):
     elif section in subjects and values[section][-1] == value:
         send_message(callback,'Выбери предмет','general')
 bot.polling(none_stop=True)
-
-
-
-
