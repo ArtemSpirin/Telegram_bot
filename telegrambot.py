@@ -40,8 +40,7 @@ def traverse_dictionary_immutable(info, dct, suffix=''):
 
 def send_message(callback):
     bot.delete_message(callback.message.chat.id, callback.message.message_id)
-    print(callback.data)
-    bot.send_message(callback.message.chat.id,'Выбирай', reply_markup=all_markups[callback.data])
+    bot.send_message(callback.message.chat.id,'Выбери предмет', reply_markup=all_markups[callback.data])
 
 
 def final_send(callback):
@@ -50,15 +49,14 @@ def final_send(callback):
 
 
 all_markups = traverse_dictionary_immutable(info, subjects)
-
 for elm in all_markups:
     markup = types.InlineKeyboardMarkup()
     if all_markups[elm][0] == '+':
-        markup.add(types.InlineKeyboardButton('Ютуб леккции', url=info[elm]['lections']))
+        markup.add(types.InlineKeyboardButton('Ютуб лекции', url=info[elm]['lections']))
     if all_markups[elm][1] == '+':
-        markup.add(types.InlineKeyboardButton('Учебники', callback_data=info[elm]['textbooks']))
+        markup.add(types.InlineKeyboardButton('Учебники', callback_data=elm+'.t'))
     if all_markups[elm][2] == '+':
-        markup.add(types.InlineKeyboardButton('Решебники', callback_data=info[elm]['solvers']))
+        markup.add(types.InlineKeyboardButton('Решебники', callback_data=elm+'.s'))
     all_markups[elm] = markup
 
 for elm1 in subjects:
@@ -91,14 +89,14 @@ for elm1 in subjects:
 
 
 for elm in all_markups:
-    if elm != 'general':
-        all_markups[elm].add(types.InlineKeyboardButton('Назад', callback_data=str(reverse_cut(elm)+'.back')))
+    if elm != 'g':
+        all_markups[elm].add(types.InlineKeyboardButton('Назад', callback_data=str(reverse_cut(elm)+'.b')))
 
 
 @bot.message_handler(commands=['start'])
 def main(message):
     bot.send_message(message.chat.id, 'Выбери предмет',
-                     reply_markup=all_markups['general'])
+                     reply_markup=all_markups['g'])
 
 
 @bot.callback_query_handler(func=lambda callback: True)
@@ -106,9 +104,17 @@ def choose(callback):
     if 'books' in callback.data:
         file = open(callback.data, 'rb')
         bot.send_document(callback.message.chat.id, file)
-    elif 'back' in callback.data:
+    elif '.b' in callback.data:
         bot.delete_message(callback.message.chat.id, callback.message.message_id)
-        bot.send_message(callback.message.chat.id, 'Выбирай', reply_markup=all_markups[reverse_cut(callback.data)])
+        bot.send_message(callback.message.chat.id, 'Выбери предмет', reply_markup=all_markups[reverse_cut(callback.data)])
+    elif '.s' in callback.data:
+        for elm in info[reverse_cut(callback.data)]['solvers']:
+            doc = open(elm, 'rb')
+            bot.send_document(callback.message.chat.id, doc)
+    elif '.t' in callback.data:
+        for elm in info[reverse_cut(callback.data)]['textbooks']:
+            doc = open(elm,'rb')
+            bot.send_document(callback.message.chat.id, doc)
     else:
         send_message(callback)
 
