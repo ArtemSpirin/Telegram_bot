@@ -1,8 +1,109 @@
-list0 = ['🧲 Физика', '🧮 Математика', '👅 Языки', '🇷🇺 История России', '💻 Программирование', '⛹️ Физкультура', '⛺️ Безопасность жизнедеятельности', '🧐 Философия']
-list1 = ['🌏 Общая физика', '⚡️ Электродинамика', '⚙️ Теоретическая механика', '✅ Математическая физика', '🧪 Физическая химия', '⚛️ Квантовая механика', '⚽️ Теория упругости', '💯 Численные методы', '🔩 Лабораторные работы']
-list2 = ['🍪 Дифференциальные уравнения', '📈 Математический анализ', '🎲 Теор. вероятности и мат. статистика', '📐 Линейная алгебра', '🔓 Функции комплексного переменного', '🔢 Теория групп', '➿ Топология']
-list3 = ['🇨🇳 Китайский', '🇩🇪 Немецкий', '🇪🇸 Испанский', '🇬🇧 Английский']
-list4 = ['🪆 Русская культура', '📻 Российская наука и техника', '📊 Социальная история России', '💸 Россия и мир в ХХ веке', '⚔️ Россия в международных отношениях', '📝 Реформы и реформаторы в России']
-list5 = ['📃 Лекции по программированию', '🔁 Алгоритмы', '🖥 Физическое моделирование', '💾 Хранение и обработка данных', '🤖 Машинное обучение']
-subjects = {'general':list0,'physics':list1,'math':list2,'languages':list3,'history':list4,'IT':list5}
-sub_subjects={'qantum_mechanics':['https://www.youtube.com/watch?v=ratanZCd0wY&list=PL2V3_dgmKYYwDgTUL_d7_AJ9khvbguvNc&index=21',[open('./kirichenko.pdf','rb'), ...],[open('./ovchinkin.pdf','rb')]]}
+subjects = {'g': {'Физика': {'Общая физика': {'Семестр 1': '+++',
+                                                    'Семестр 2': '+++',
+                                                    'Семестр 3': '+++',
+                                                    'Семестр 4': '+++'
+                                                    },
+                                   'Электродинамика': '+--',
+                                   'Теор механика': {'Семестр 3': '+--',
+                                                     'Семестр 4': '+--'
+
+                                                     },
+                                   'Мат физика': '+--',
+                                   'Физ химия': '++-',
+                                   'Квант механика': '---',
+                                   'Теория упругости': '---',
+                                   'Численные методы': '---',
+                                   'Лаб работы': '---'},
+                        'Математика': {'Диф уравнения': '+--',
+                                       'Мат анализ': {'Семестр 1': '+++',
+                                                      'Семестр 2': '+++',
+                                                      'Семестр 3': '+++'
+                                                      },
+                                       'Теор вероятностей': '+--',
+                                       'Лин алгебра': {'Семестр 1': '++-',
+                                                            'Семестр 2': '++-',
+                                                            'Семестр 3': '++-'
+                                                            },
+                                       'Компл анализ': '+--',
+                                       'Теория групп': '---',
+                                       'Топология': '---'},
+                        'Языки': {'Китайский': '---',
+                                  'Немецкий': '---',
+                                  'Испанский': '---',
+                                  'Английский': '---'},
+                        'История России': {'Рус культура': '---',
+                                           'Наука и техника': '---',
+                                           'Соц история ': '---',
+                                           'Россия и мир': '---',
+                                           'Россия в МО': '---',
+                                           'РР в России': '---'},
+                        'Программирование': {'Лекции по проге': '---',
+                                             'Алгоритмы': '---',
+                                             'Физ моделирование': '---',
+                                             'Хранение и обработка данных': '---',
+                                             'Машинное обучение': '---'},
+                        'Физкультура': '---',
+                        'ОБЖ': '---',
+                        'Философия': '---'}}
+
+info = {
+    'g.Физика.Общая физика.Семестр 1': {
+        'lections': 'https://www.youtube.com/playlist?list=PLIWWD4hFxKhNQhYtDq_lyBA9bz2opD-xp',
+        'textbooks': ['./books/belchenko_mechanics.pdf','./books/kirichenko_mechanics.pdf','./books/kudlis_konspect.pdf'],
+        'solvers': ['./books/ovckinkin2013.pdf','./books/silagadze.pdf'],},
+    'g.Физика.Общая физика.Семестр 2': {
+        'lections': 'https://vk.com/away.php?to=https%3A%2F%2Fwww.youtube.com%2Fplaylist%3Flist%3DPLIWWD4hFxKhO1q3bNGEuxWG-cXqJ0nr2a&cc_key=',
+        'textbooks': ['./books/Kirichenko_therma.pdf','./books/sivuhin.pdf'],
+        'solvers': ['./books/ovchinkin2013.pdf','./books/koryavov.pdf']},
+'g.Физика.Общая физика.Семестр 3': {
+        'lections': 'https://www.youtube.com/playlist?list=PLIWWD4hFxKhPwnMP0D7K72x17EsfzNUDa',
+        'textbooks': ['./books/kirichenko_electricity.pdf','./books/sivuhin_electricity.pdf'],
+        'solvers': ['./books/ovchinkin_electricity.pdf']},
+'g.Физика.Общая физика.Семестр 4': {
+        'lections': 'https://www.youtube.com/playlist?list=PLzMmAktiHfMJPT3uRZjS4ITaU3lwyxun4',
+        'textbooks': ['./books/kirichenko_optic.djvu','./books/sivuhin_optic.pdf'],
+        'solvers': ['./books/ovchinkin_electricity.pdf']},
+'g.Физика.Электродинамика':{'lections': 'https://www.youtube.com/playlist?list=PLzMmAktiHfMJ7Y5Ed4G-JggSDqm70XBUa',
+        'textbooks': [],
+        'solvers': []},
+'g.Физика.Теор механика.Семестр 3':{'lections': 'https://www.youtube.com/watch?v=OywfVtui_M0&list=PLzMmAktiHfMJFUudsSN2rLDvqzpcg0o_r&t=577s',
+        'textbooks': [],
+        'solvers': []},
+'g.Физика.Теор механика.Семестр 4':{'lections': 'https://www.youtube.com/playlist?list=PLzMmAktiHfMJf84rK-ShQnoZpq7ao9RTn',
+        'textbooks': ['./books/sivuhin_optic.pdf'],
+        'solvers': './books/ovckinkin_mechanics_and_thermodynamics.pdf'},
+    'g.Физика.Мат физика':{'lections': 'https://www.youtube.com/playlist?list=PLzMmAktiHfMIGz0KQFWbPkVhMgYLqPiki',
+        'textbooks': './books/belchenko_mechanics.pdf',
+        'solvers': './books/ovckinkin_mechanics_and_thermodynamics.pdf'},
+'g.Физика.Физ химия':{'lections': 'https://www.youtube.com/playlist?list=PLzMmAktiHfMIIn1vUOuMU-mvlD_NnkCNu',
+        'textbooks': ['./books/Korolev.pdf'],
+        'solvers': []},
+'g.Математика.Диф уравнения':{'lections': 'https://www.youtube.com/playlist?list=PL1Bg2H0GvcuzBu9jT1fjmCAmEUuGZvc1x',
+        'textbooks': [],
+        'solvers': []},
+'g.Математика.Мат анализ.Семестр 1':{'lections': 'https://youtube.com/playlist?list=PLIWWD4hFxKhPiJSlpFNuekFOhvjU-0K5I&si=XvN-uryYIxgU72L_',
+        'textbooks': ['./books/zorich_1st.pdf'],
+        'solvers': ['./books/kudravciev.djvu','./books/demidovich.djvu']},
+'g.Математика.Мат анализ.Семестр 2':{'lections': 'https://www.youtube.com/playlist?list=PLIWWD4hFxKhO9S1vsaUqmRZ-w0pjVeBaw',
+        'textbooks': ['./books/zorich_1st.pdf','./books/zorich_2nd.pdf'],
+        'solvers': ['./books/kudravciev2.djvu','./books/demidovich.djvu']},
+'g.Математика.Мат анализ.Семестр 3':{'lections': 'https://www.youtube.com/playlist?list=PLzMmAktiHfMJ9gvLkAsTemCJ3UqCIthQU',
+        'textbooks': ['./books/zorich_1st.pdf','./books/zorich_2nd.pdf'],
+        'solvers': ['./books/kudravciev3.djvu','./books/demidovich.djvu']},
+'g.Математика.Теор вероятностей':{'lections': 'https://www.youtube.com/playlist?list=PLgmkKrWm48R-61mb4JUITtGDNwSL3MUQH',
+        'textbooks': [],
+        'solvers': []},
+'g.Математика.Лин алгебра.Семестр 1':{'lections':  'https://youtube.com/playlist?list=PLd7QXkfmSY7aNScUfSoi4RT0xvHdsrDWs&si=SvOnt8630gNR2qvw',
+        'textbooks': ['./books/Vinberg.pdf','./books/Algebra_konspect.pdf','./books/linear_spaces.pdf'],
+        'solvers': []},
+'g.Математика.Лин алгебра.Семестр 2':{'lections': 'https://youtube.com/playlist?list=PLd7QXkfmSY7bD4Ok4_YpwZHPaFtM4F7dW&si=EQ3t0oFbddXwqjVx',
+        'textbooks': ['./books/Vinberg.pdf','./books/tensor_algebra.pdf','./books/linear_operator.pdf','./books/evklidian_structure.pdf'],
+        'solvers': []},
+'g.Математика.Лин алгебра.Семестр 3':{'lections': 'https://www.youtube.com/playlist?list=PLd7QXkfmSY7YTGYjW0VorQag4N_n5Y6Nm',
+        'textbooks': ['./books/Vinberg.pdf'],
+        'solvers': []},
+
+'g.Математика.Компл анализ':{'lections': 'https://www.youtube.com/playlist?list=PLzMmAktiHfML7Q3htVqqFXFeWCmpFa495',
+        'textbooks': [],
+        'solvers': []},
+}
