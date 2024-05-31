@@ -1,92 +1,116 @@
 import telebot
 from telebot import types
 from data import *
+
 bot = telebot.TeleBot('7227822094:AAF8d2eKdzzukxxr2z9-zjzRUgPmDX27Ai0')
 # t.me/physics1478_bot
 
 all_markups = {}
-global numbers
-numbers = [i for i in range(1000)]
-values = {}
-def send_message(callback, message, section):
+
+
+def reverse_cut(line):
+    index = 0
+    for i in range(len(line) - 1, 0, -1):
+        if line[i] == '.':
+            index = i
+            break
+    return line[:index]
+def cut(line):
+    index = 0
+    for i in range(0, len(line), -1):
+        if line[i] == '.':
+            index = i
+    return line[index+1:]
+
+
+def traverse_dictionary_immutable(info, dct, suffix=''):
+    new_dct = {}
+    ans = {}
+    for key in dct:
+        if isinstance(dct[key], dict):
+            new_dct.update(traverse_dictionary_immutable(info, dct[key], suffix + key + '.'))
+
+        else:
+            new_dct[suffix + key] = dct[key]
+
+    for key in new_dct:
+        ans.update({key: new_dct[key]})
+    return ans
+
+
+def send_message(callback):
     bot.delete_message(callback.message.chat.id, callback.message.message_id)
-    bot.send_message(callback.message.chat.id, message, reply_markup=all_markups[section])
+    print(callback.data)
+    bot.send_message(callback.message.chat.id,'Выбирай', reply_markup=all_markups[callback.data])
 
-def creat_markup(list):
-    global numbers
-    flag = 0
-    if numbers[0] == 0:
-        flag = 1
-    values = []
+
+def final_send(callback):
+    bot.delete_message(callback.message.chat.id, callback.message.message_id)
+    bot.send_document(callback.message.chat.id, callback.data[0], reply_markup=all_markups[callback.data[1]])
+
+
+all_markups = traverse_dictionary_immutable(info, subjects)
+
+for elm in all_markups:
     markup = types.InlineKeyboardMarkup()
-    inner_counter = {}
-    for i in range(len(list)):
-        inner_counter.update({list[i]: numbers[0]})
-        values.append(numbers[0])
-        numbers = numbers[1:]
-    for elm in inner_counter:
-        markup.add(types.InlineKeyboardButton(elm, callback_data=str(inner_counter.get(elm))))
-    if flag == 0:
-        markup.add(types.InlineKeyboardButton('Назад', callback_data=numbers[0]))
-        values.append(numbers[0])
-        numbers = numbers[1:]
-    return [markup,values]
+    if all_markups[elm][0] == '+':
+        markup.add(types.InlineKeyboardButton('Ютуб леккции', url=info[elm]['lections']))
+    if all_markups[elm][1] == '+':
+        markup.add(types.InlineKeyboardButton('Учебники', callback_data=info[elm]['textbooks']))
+    if all_markups[elm][2] == '+':
+        markup.add(types.InlineKeyboardButton('Решебники', callback_data=info[elm]['solvers']))
+    all_markups[elm] = markup
+
+for elm1 in subjects:
+    if type(subjects[elm1]) != str:
+        for elm2 in subjects[elm1]:
+            if type(subjects[elm1][elm2]) != str:
+                for elm3 in subjects[elm1][elm2]:
+                            markup = types.InlineKeyboardMarkup()
+                            for elm4 in subjects[elm1][elm2][elm3]:
+                                if elm4 !=('-' or '+'):
+                                    markup.add(types.InlineKeyboardButton(elm4, callback_data=str(elm1+'.'+elm2+'.'+elm3+'.'+elm4)))
+                            all_markups[str(elm1+'.'+elm2+'.'+elm3)] = markup
+
+for elm1 in subjects:
+    if type(subjects[elm1]) != str:
+        for elm2 in subjects[elm1]:
+            if type(subjects[elm1][elm2]) != str:
+                markup = types.InlineKeyboardMarkup()
+                for elm3 in subjects[elm1][elm2]:
+                        markup.add(types.InlineKeyboardButton(elm3, callback_data=str(elm1+'.'+elm2+'.'+elm3)))
+                all_markups[str(elm1+'.'+elm2)] = markup
 
 
-def create_final_markups(callback, lections='', solver=None, textbook=None):
-    global numbers
-    values = []
-    markup = types.InlineKeyboardMarkup()
-    if lections != '':
-        markup.add(types.InlineKeyboardButton('Ютуб леккции', url=lections))
-    if solver != None:
-        markup.add(types.InlineKeyboardButton('Учебники', callback_data=send_file(callback,solver)))
-    if textbook != None:
-        markup.add(types.InlineKeyboardButton('Решебники', callback_data=send_file(callback, textbook)))
-    markup.add(types.InlineKeyboardButton('Назад', callback_data=numbers[0]))
-    values.append(numbers[0])
-    numbers = numbers[1:]
-    return [markup, values]
+for elm1 in subjects:
+    if type(subjects[elm1]) != str:
+        markup = types.InlineKeyboardMarkup()
+        for elm2 in subjects[elm1]:
+                    markup.add(types.InlineKeyboardButton(elm2, callback_data=str(elm1+'.'+elm2)))
+        all_markups[str(elm1)] = markup
 
 
-for section in subjects:
-    list = creat_markup(subjects[section])
-    all_markups[section] = list[0]
-    values[section] = list[1]
-    for section in subjects:
-        for elm in subjects[section]:
-            create_final_markups()
+for elm in all_markups:
+    if elm != 'general':
+        all_markups[elm].add(types.InlineKeyboardButton('Назад', callback_data=str(reverse_cut(elm)+'.back')))
+
 
 @bot.message_handler(commands=['start'])
 def main(message):
-    bot.send_message(message.chat.id, 'Выбери предмет', reply_markup=all_markups['general'])
+    bot.send_message(message.chat.id, 'Выбери предмет',
+                     reply_markup=all_markups['general'])
+
 
 @bot.callback_query_handler(func=lambda callback: True)
-def send_file(callback, file):
-    bot.send_document(callback.message.chat.id, file)
 def choose(callback):
-    section = None
-    value = 0
-    for elm in values:
-        if int(callback.data) in values[elm]:
-            section = elm
-            value = int(callback.data)
-    if section == 'general':
-        match value:
-            case 0:
-                send_message(callback,'Выбери тему','physics')
-        match value:
-            case 1:
-                send_message(callback,'Выбери тему','math')
-        match value:
-            case 2:
-                send_message(callback,'Выбери тему','languages')
-        match value:
-            case 3:
-                send_message(callback,'Выбери тему','history')
-        match value:
-            case 4:
-                send_message(callback,'Выбери тему','IT')
-    elif section in subjects and values[section][-1] == value:
-        send_message(callback,'Выбери предмет','general')
+    if 'books' in callback.data:
+        file = open(callback.data, 'rb')
+        bot.send_document(callback.message.chat.id, file)
+    elif 'back' in callback.data:
+        bot.delete_message(callback.message.chat.id, callback.message.message_id)
+        bot.send_message(callback.message.chat.id, 'Выбирай', reply_markup=all_markups[reverse_cut(callback.data)])
+    else:
+        send_message(callback)
+
+
 bot.polling(none_stop=True)
